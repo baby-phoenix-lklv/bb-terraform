@@ -16,8 +16,7 @@ resource "null_resource" "eks_oidc_association" {
   provisioner "local-exec" {
     command = <<EOH
     curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-    sudo mv /tmp/eksctl /usr/local/bin
-    eksctl utils associate-iam-oidc-provider --cluster  ${data.terraform_remote_state.eks_state.outputs.phx_eks.name} --approve"
+    /tmp/eksctl utils associate-iam-oidc-provider --cluster  ${data.terraform_remote_state.eks_state.outputs.phx_eks.name} --approve"
     EOH
   }
   provisioner "local-exec" {
