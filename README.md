@@ -18,7 +18,8 @@ cd 2-eks/
 tf init
 tf plan
 tf apply --auto-approve
-// update eks config from tf output
+# update eks config from tf output
+update_kubeconfig_command = "aws eks update-kubeconfig --region ap-southeast-1 --name phx_eks"
 ```
 
 ```
@@ -31,6 +32,7 @@ tf apply --auto-approve
 # Destroy environments
 
 ```
+# make sure there is no deployment in EKS
 cd 3-eks-addons/
 tf destroy
 cd 2-eks/

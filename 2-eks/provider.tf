@@ -11,10 +11,13 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
 }
-
+# Terraform Cloud 
 data "terraform_remote_state" "network_state" {
-  backend = "local"
+  backend = "remote"
   config = {
-    path = "../1-network/terraform.tfstate"
+    organization = "bbphoenix"
+    workspaces = {
+      name = "folder_1-network"
+    }
   }
 }
