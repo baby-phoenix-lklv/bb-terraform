@@ -31,6 +31,6 @@ data "tls_certificate" "tls_cert" {
 
 resource "aws_iam_openid_connect_provider" "eks_oidc_association" {
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.example.certificates.0.sha1_fingerprint]
+  thumbprint_list = [data.tls_certificate.tls_cert.certificates.0.sha1_fingerprint]
   url             = data.terraform_remote_state.eks_state.outputs.phx_eks.identity.0.oidc.0.issuer
 }
