@@ -11,3 +11,6 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
 }
+
+
+# TO ADD REMOTE STATE COFNGIGURATION
