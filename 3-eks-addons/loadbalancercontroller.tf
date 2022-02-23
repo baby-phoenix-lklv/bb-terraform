@@ -4,14 +4,14 @@ locals {
 # to get the oidc issuer url after eksctl associate
 data "aws_eks_cluster" "phx_eks_post_association" {
   name       = "phx_eks"
-  depends_on = [null_resource.eks_oidc_association]
+  depends_on = [aws_iam_openid_connect_provider.eks_oidc_association]
 }
 
 # to get the oidc arn
-data "external" "oidc" {
-  program    = ["/bin/bash", "-c", "aws iam list-open-id-connect-providers | jq '.OpenIDConnectProviderList[0]'"]
-  depends_on = [null_resource.eks_oidc_association]
-}
+# data "external" "oidc" {
+#   program    = ["/bin/bash", "-c", "aws iam list-open-id-connect-providers | jq '.OpenIDConnectProviderList[0]'"]
+#   depends_on = [null_resource.eks_oidc_association]
+# }
 
 # IAM role for oidc:aws-lb-controller-sa
 resource "aws_iam_role" "phx_eks_load_balancer_controller_role" {
@@ -24,7 +24,7 @@ resource "aws_iam_role" "phx_eks_load_balancer_controller_role" {
           "Effect" : "Allow",
           "Action" : "sts:AssumeRoleWithWebIdentity",
           "Principal" : {
-            "Federated" : "${data.external.oidc.result.Arn}"
+            "Federated" : aws_iam_openid_connect_provider.eks_oidc_association.arn
           },
           "Condition" : {
             "StringEquals" : {
