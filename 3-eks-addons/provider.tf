@@ -19,11 +19,14 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
 }
-
+# Import state from eks workspace
 data "terraform_remote_state" "eks_state" {
-  backend = "local"
+  backend = "remote"
   config = {
-    path = "../2-eks/terraform.tfstate"
+    organization = "bbphoenix"
+    workspaces = {
+      name = "folder_2-eks"
+    }
   }
 }
 
