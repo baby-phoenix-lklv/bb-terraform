@@ -72,18 +72,19 @@ resource "kubernetes_service_account" "phx_aws_load_balancer_controller_sa" {
 }
 
 # import eks charts
-resource "null_resource" "add_eks_repo" {
-  provisioner "local-exec" {
-    command = "helm repo add eks https://aws.github.io/eks-charts; helm repo update"
-  }
-}
+# resource "null_resource" "add_eks_repo" {
+#   provisioner "local-exec" {
+#     command = "helm repo add eks https://aws.github.io/eks-charts; helm repo update"
+#   }
+# }
 
 # Deploy AWS load balancer controller
 resource "helm_release" "aws_load_balancer_controller_helm_release" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
+  name              = "aws-load-balancer-controller"
+  dependency_update = true
+  repository        = "https://aws.github.io/eks-charts"
+  chart             = "aws-load-balancer-controller"
+  namespace         = "kube-system"
 
   set {
     name  = "clusterName"
