@@ -19,24 +19,30 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
 }
-
+# Import state from eks workspace
 data "terraform_remote_state" "eks_state" {
-  backend = "local"
+  backend = "remote"
   config = {
-    path = "../2-eks/terraform.tfstate"
+    organization = "bbphoenix"
+    workspaces = {
+      name = "folder_2-eks"
+    }
   }
+}
+
+data "aws_eks_cluster_auth" "phx_eks_auth_token" {
+  name = data.terraform_remote_state.eks_state.outputs.phx_eks.name
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
-  config_context = "arn:aws:eks:ap-southeast-1:759744877037:cluster/phx_eks"
+  host                   = data.terraform_remote_state.eks_state.outputs.phx_eks.endpoint
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks_state.outputs.phx_eks.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.phx_eks_auth_token.token
 }
-
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config"
-    config_context = "arn:aws:eks:ap-southeast-1:759744877037:cluster/phx_eks"
+    host                   = data.terraform_remote_state.eks_state.outputs.phx_eks.endpoint
+    cluster_ca_certificate = base64decode(data.terraform_remote_state.eks_state.outputs.phx_eks.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.phx_eks_auth_token.token
   }
 }
-
-
