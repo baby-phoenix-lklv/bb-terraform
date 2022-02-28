@@ -25,7 +25,7 @@ data "terraform_remote_state" "eks_state" {
   config = {
     organization = "babyphoenix"
     workspaces = {
-      name = "folder_2-eks"
+      name = "prod-eks-addons"
     }
   }
 }

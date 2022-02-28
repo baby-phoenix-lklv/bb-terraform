@@ -17,7 +17,7 @@ data "terraform_remote_state" "network_state" {
   config = {
     organization = "babyphoenix"
     workspaces = {
-      name = "folder_1-network"
+      name = "prod-network"
     }
   }
 }
