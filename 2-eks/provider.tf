@@ -15,7 +15,7 @@ provider "aws" {
 data "terraform_remote_state" "network_state" {
   backend = "remote"
   config = {
-    organization = "bbphoenix"
+    organization = "babyphoenix"
     workspaces = {
       name = "folder_1-network"
     }

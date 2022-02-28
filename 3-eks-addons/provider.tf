@@ -23,7 +23,7 @@ provider "aws" {
 data "terraform_remote_state" "eks_state" {
   backend = "remote"
   config = {
-    organization = "bbphoenix"
+    organization = "babyphoenix"
     workspaces = {
       name = "folder_2-eks"
     }
